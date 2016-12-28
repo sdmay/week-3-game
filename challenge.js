@@ -39,7 +39,6 @@ $("#guess").on("click", function letterGuess() {
             $("#newGuess").val(" ");
             return false;
         }
-        
     }
     for (i = 0; i < guessMade.length; i++) {
         console.log(i)
@@ -83,29 +82,30 @@ $("#guess").on("click", function letterGuess() {
             newLetter();
         }
     }
-    if (wins === 5) {
+    if (wins > 4) {
         alert("YOU ARE THE WINNER!!")
         guessesLeft = 10;
         guessesSoFar = 0;
         wins = 0;
         losses = 0;
         guessStore.length = 0;
+        $(".wins").html("Wins: " + wins);
+        $(".losses").html("Losses: " + losses);
         $(".userGuess").html('Your Guess: ');
         newLetter();
-
     }
-    if (losses === 5) {
+    if (losses > 4 ) {
         alert("YOU ARE THE LOSER!!")
         guessesLeft = 10;
         guessesSoFar = 0;
         wins = 0;
         losses = 0;
         guessStore.length = 0;
+        $(".wins").html("Wins: " + wins);
+        $(".losses").html("Losses: " + losses);
         $(".userGuess").html('Your Guess: ');
         newLetter();
-
     }
-    
     $("#newGuess").val(" ");
 });
 newLetter();
