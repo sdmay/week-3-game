@@ -4,10 +4,12 @@ var losses = 0;
 var guessesLeft = 10;
 var guessesSoFar = 0;
 var regex = /^[a-zA-Z]+$/;
+var guessStore = [];
 
 function newLetter() {
     var guessesLeft = 10;
     var guessesSoFar = 0;
+    guessStore.length = 0;
     $(".guessesLeft").html("Guesses Left: " + guessesLeft);
     $(".guessesSoFar").html("Your Guesses So Far: " + guessesSoFar);
     var randomLetter = Math.floor(Math.random() * 26);
@@ -24,14 +26,24 @@ $(".guessesSoFar").html("Your Guesses So Far: " + guessesSoFar);
 
 $("#guess").on("click", function letterGuess() {
     var guessMade = $("#newGuess").val().trim();
+
     if (guessMade === "") {
         alert('You did not enter a valid guess.');
         $("#newGuess").val(" ");
         return false;
     }
     console.log(guessMade)
+    for (j = 0; j < guessStore.length; j++) {
+        if (guessStore[j] === guessMade) {
+            alert("Pick again");
+            $("#newGuess").val(" ");
+            return false;
+        }
+        
+    }
     for (i = 0; i < guessMade.length; i++) {
         console.log(i)
+
         if (!guessMade.match(regex) || i >= 1) {
             alert('You did not enter a valid guess.');
             $("#newGuess").val(" ");
@@ -43,12 +55,17 @@ $("#guess").on("click", function letterGuess() {
     guessesLeft--
     $(".guessesLeft").html("Guesses Left: " + guessesLeft);
     $(".userGuess").append(guessMade + " - ")
+
+    guessStore.push(guessMade);
+    console.log(guessStore)
+
     if (guessMade === computerGuess) {
         wins++
         $(".wins").html("Wins: " + wins);
         alert("YOU WIN! Let's Play again!")
         guessesLeft = 10;
         guessesSoFar = 0;
+        guessStore.length = 0;
         $(".userGuess").html('Your Guess: ');
         newLetter();
     }
@@ -58,9 +75,10 @@ $("#guess").on("click", function letterGuess() {
         if (guessesLeft === 0) {
             losses++
             $(".losses").html("Losses: " + losses);
-            alert("YOU LOSE! Let's play one more time!");
+            alert("YOU LOSE! the letter was-- " + computerGuess + " --Let's play one more time!");
             guessesLeft = 10;
             guessesSoFar = 0;
+            guessStore.length = 0;
             $(".userGuess").html('Your Guess: ');
             newLetter();
         }
@@ -71,6 +89,7 @@ $("#guess").on("click", function letterGuess() {
         guessesSoFar = 0;
         wins = 0;
         losses = 0;
+        guessStore.length = 0;
         $(".userGuess").html('Your Guess: ');
         newLetter();
 
@@ -81,10 +100,12 @@ $("#guess").on("click", function letterGuess() {
         guessesSoFar = 0;
         wins = 0;
         losses = 0;
+        guessStore.length = 0;
         $(".userGuess").html('Your Guess: ');
         newLetter();
 
     }
+    
     $("#newGuess").val(" ");
 });
 newLetter();
